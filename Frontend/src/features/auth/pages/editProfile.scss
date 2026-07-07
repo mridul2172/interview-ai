@@ -1,0 +1,133 @@
+.edit-profile-page {
+    min-height: calc(100vh - 60px);
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+
+    .ep-container {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .ep-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: rgba(225, 3, 77, 0.15);
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    h1 {
+        font-size: 26px;
+        margin: 0 0 4px;
+    }
+
+    .ep-subtitle {
+        color: #9199a8;
+        font-size: 14px;
+        margin: 0 0 28px;
+    }
+
+    .ep-card {
+        background: #171a21;
+        border: 1px solid #262b35;
+        border-radius: 16px;
+        padding: 24px;
+    }
+
+    label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: #c5cad3;
+        margin-bottom: 6px;
+    }
+
+    .ep-input-wrapper {
+        margin-bottom: 18px;
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            background: #0f1115;
+            border: 1px solid #2a2f3a;
+            color: #fff;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+
+            &:focus {
+                border-color: #e1034d;
+            }
+
+            &:disabled {
+                color: #6b7280;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .ep-hint {
+        color: #6b7280;
+        font-size: 12px;
+        margin: -12px 0 20px;
+    }
+
+    .ep-error {
+        color: #f87171;
+        font-size: 13px;
+        margin: -8px 0 14px;
+    }
+
+    .ep-submit-btn {
+        width: 100%;
+        background: #e1034d;
+        color: #fff;
+        border: none;
+        padding: 13px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.15s ease;
+
+        &:active {
+            transform: scale(0.97);
+        }
+    }
+
+    .ep-back-link {
+        text-align: center;
+        margin-top: 18px;
+
+        a {
+            color: #e1034d;
+            font-size: 13px;
+            text-decoration: none;
+        }
+    }
+
+    .ep-send-code-btn {
+        white-space: nowrap;
+        background: #262b35;
+        color: #fff;
+        border: 1px solid #3a4150;
+        padding: 0 14px;
+        border-radius: 10px;
+        font-size: 13px;
+        cursor: pointer;
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    }
+}

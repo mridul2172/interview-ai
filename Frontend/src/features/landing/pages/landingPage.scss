@@ -1,0 +1,373 @@
+.landing-page {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+}
+
+// ── Navbar ──────────────────────────────
+.lp-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 17px;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    &__dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #e1034d;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 12px;
+    }
+}
+
+.lp-btn-ghost {
+    background: none;
+    border: none;
+    color: #9199a8;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 8px 12px;
+}
+
+.lp-btn-primary {
+    background: #e1034d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    &:hover {
+        background: #c40340;
+    }
+}
+
+// ── Hero ──────────────────────────────
+.lp-hero {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 24px 32px;
+
+    &__badge {
+        display: inline-block;
+        background: #1a1a24;
+        border: 1px solid #262b35;
+        color: #d4a5b8;
+        font-size: 12px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        color: #fff;
+        font-size: 36px;
+        font-weight: 700;
+        margin: 0 0 16px;
+        line-height: 1.25;
+    }
+
+    &__gradient {
+        background: linear-gradient(90deg, #e1034d, #ff6b9d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    p {
+        color: #9199a8;
+        font-size: 15px;
+        margin: 0 0 28px;
+        line-height: 1.6;
+    }
+}
+
+.lp-btn-primary--lg {
+    padding: 13px 30px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+// ── Stats ──────────────────────────────
+.lp-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 24px 0;
+    border-top: 1px solid #1e222b;
+    border-bottom: 1px solid #1e222b;
+    max-width: 640px;
+    margin: 0 auto 64px;
+
+    div {
+        text-align: center;
+    }
+
+    &__num {
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    &__label {
+        color: #6b7280;
+        font-size: 12px;
+        margin: 2px 0 0;
+    }
+}
+
+// ── Section shared ──────────────────────────────
+.lp-section {
+    padding: 0 24px 64px;
+    max-width: 900px;
+    margin: 0 auto;
+
+    &__eyebrow {
+        text-align: center;
+        color: #6b7280;
+        font-size: 12px;
+        letter-spacing: 1px;
+        margin: 0 0 8px;
+        text-transform: uppercase;
+    }
+
+    &__title {
+        text-align: center;
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 32px;
+    }
+}
+
+// ── How it works ──────────────────────────────
+.lp-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.lp-step {
+    text-align: center;
+    padding: 0 12px;
+
+    &__num {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #171a21;
+        border: 1px solid #262b35;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 14px;
+        color: #e1034d;
+        font-weight: 700;
+    }
+
+    p:first-of-type {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 6px;
+    }
+
+    p:last-of-type {
+        color: #9199a8;
+        font-size: 12.5px;
+        margin: 0;
+        line-height: 1.5;
+    }
+}
+
+// ── Feature cards ──────────────────────────────
+.lp-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.lp-feature-card {
+    background: #171a21;
+    border: 1px solid #262b35;
+    border-radius: 14px;
+    padding: 20px;
+
+    &__icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: rgba(225, 3, 77, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        font-size: 18px;
+    }
+
+    h3 {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 4px;
+    }
+
+    p {
+        color: #9199a8;
+        font-size: 12.5px;
+        margin: 0;
+        line-height: 1.5;
+    }
+}
+
+// ── Testimonial ──────────────────────────────
+.lp-testimonial {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #171a21;
+    border: 1px solid #262b35;
+    border-radius: 16px;
+    padding: 28px 32px;
+    text-align: center;
+
+    &__icon {
+        color: #e1034d;
+        font-size: 28px;
+    }
+
+    &__quote {
+        color: #d1d5db;
+        font-size: 15px;
+        line-height: 1.6;
+        margin: 12px 0 16px;
+    }
+
+    &__name {
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    &__role {
+        color: #6b7280;
+        font-size: 12px;
+        margin: 0;
+    }
+
+    &__dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    &__dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: none;
+        background: #262b35;
+        cursor: pointer;
+        padding: 0;
+        transition: all 0.3s ease;
+
+        &--active {
+            background: #e1034d;
+            width: 22px;
+            border-radius: 4px;
+        }
+    }
+}
+
+// ── Final CTA ──────────────────────────────
+.lp-final-cta {
+    text-align: center;
+    padding: 0 24px 64px;
+
+    h2 {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 10px;
+    }
+
+    p {
+        color: #9199a8;
+        font-size: 14px;
+        margin: 0 0 24px;
+    }
+}
+
+// ── Footer ──────────────────────────────
+.lp-footer {
+    border-top: 1px solid #1e222b;
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    p {
+        color: #6b7280;
+        font-size: 12px;
+        margin: 0;
+    }
+
+    &__links {
+        display: flex;
+        gap: 20px;
+
+        a {
+            color: #6b7280;
+            font-size: 12px;
+            text-decoration: none;
+
+            &:hover {
+                color: #e1034d;
+            }
+        }
+    }
+}
+
+// ── Responsive ──────────────────────────────
+@media (max-width: 700px) {
+    .lp-steps,
+    .lp-features {
+        grid-template-columns: 1fr;
+    }
+
+    .lp-stats {
+        gap: 24px;
+    }
+
+    .lp-hero h1 {
+        font-size: 26px;
+    }
+}

@@ -1,0 +1,113 @@
+.analytics-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    color: #e6edf3;
+    font-family: system-ui, sans-serif;
+
+    .analytics-header {
+        margin-bottom: 24px;
+
+        h1 {
+            font-size: 26px;
+            margin: 0 0 4px;
+        }
+
+        p {
+            color: #9199a8;
+            font-size: 14px;
+            margin: 0;
+        }
+    }
+
+    .analytics-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .stat-card {
+        background: #171a21;
+        border: 1px solid #262b35;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+    }
+
+    .stat-num {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+        color: #fff;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #6b7280;
+        margin: 4px 0 0;
+    }
+
+    .analytics-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .analytics-card {
+        background: #171a21;
+        border: 1px solid #262b35;
+        border-radius: 14px;
+        padding: 20px;
+
+        &--full {
+            grid-column: 1 / -1;
+        }
+
+        h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 12px;
+            color: #fff;
+        }
+    }
+
+    .no-data {
+        color: #6b7280;
+        font-size: 13px;
+        text-align: center;
+        padding: 60px 0;
+    }
+
+    .analytics-back {
+        display: inline-block;
+        margin-top: 24px;
+        color: #e1034d;
+        font-size: 13px;
+        text-decoration: none;
+    }
+
+    .analytics-empty {
+        text-align: center;
+        padding: 80px 20px;
+
+        p {
+            color: #9199a8;
+            margin-bottom: 16px;
+        }
+
+        a {
+            color: #e1034d;
+            font-size: 13px;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .analytics-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .analytics-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+}
