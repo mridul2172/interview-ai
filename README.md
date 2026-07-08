@@ -1,49 +1,122 @@
-# InterviewAI
+# 🚀 InterviewAI
 
-A full-stack app that helps you prepare for interviews. Upload your resume and paste in a job description, and it generates a match score, likely technical and behavioral questions, your skill gaps, and a day-by-day prep plan — all using Gemini AI.
+> **An AI-powered interview preparation platform that analyzes your resume against a job description and generates personalized interview insights, technical questions, skill-gap analysis, and a structured preparation roadmap using Google Gemini AI.**
 
-I built this to actually solve my own problem: staring at a job posting with no idea what to study first. This automates that first hour of prep work.
+---
 
-## What it does
+## 🌐 Live Demo
 
-- Upload a resume (or just describe yourself) + paste a job description → get a personalized interview report
-- Regenerate just one part of a report (e.g. only the technical questions) instead of starting over
-- Download an AI-tailored version of your resume as a PDF
-- Track trends across all your reports on an analytics page — average match score, recurring skill gaps, etc.
-- Full account system: OTP email verification, login/logout with refresh tokens, forgot password, change password, edit profile, delete account
+**🔗 https://interview-ai-five-umber.vercel.app**
 
-## Stack
+---
 
-**Frontend:** React, React Router, SCSS, Recharts, Axios
-**Backend:** Node.js, Express, MongoDB, JWT, Puppeteer, Nodemailer, Google Gemini API
+## 📖 Overview
 
-## Running it locally
+Preparing for interviews often starts with figuring out **what to study first**. Instead of manually comparing your resume with a job description, **InterviewAI** automates the entire process.
 
-Clone the repo, then set up both sides:
+Simply upload your resume (or describe your profile), paste a job description, and receive a comprehensive AI-generated interview report within seconds.
+
+---
+
+## ✨ Key Features
+
+* 🤖 AI-powered interview report generation using **Google Gemini**
+* 📄 Upload your resume or provide a self-description
+* 💼 Analyze any job description
+* 📊 Resume-to-job match score
+* 🎯 Personalized technical interview questions
+* 💬 Behavioral interview questions
+* 📈 Skill gap analysis with improvement suggestions
+* 🗓️ Day-by-day interview preparation roadmap
+* 🔄 Regenerate individual report sections without creating a new report
+* 📥 Download an AI-tailored resume as a PDF
+* 📊 Analytics dashboard with report history and trends
+* 🔐 Complete authentication system
+
+  * Email OTP verification
+  * Login & Logout
+  * JWT Access & Refresh Tokens
+  * Forgot Password
+  * Change Password
+  * Edit Profile
+  * Delete Account
+* 📱 Fully responsive design for desktop, tablet, and mobile
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React.js
+* React Router
+* SCSS
+* Axios
+* Recharts
+
+### Backend
+
+* Node.js
+* Express.js
+
+### Database
+
+* MongoDB Atlas
+* Mongoose
+
+### Authentication
+
+* JWT Authentication
+* Refresh Tokens
+* Nodemailer
+
+### AI & Utilities
+
+* Google Gemini API
+* Puppeteer
+
+---
+
+## ⚙️ Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/mridul2172/interview-ai.git
+cd interview-ai
+```
+
+---
+
+### 2. Backend Setup
 
 ```bash
 cd Backend
 npm install
 ```
 
-Add a `.env` file in `Backend/`:
+Create a `.env` file inside the **Backend** folder.
 
-```
+```env
 PORT=3000
 MONGO_URI=your_mongodb_uri
-JWT_SECRET=some_random_string
-JWT_REFRESH_SECRET=another_random_string
-GOOGLE_GENAI_API_KEY=your_gemini_key
-EMAIL_USER=your_gmail
-EMAIL_APP_PASSWORD=your_gmail_app_password
+JWT_SECRET=your_jwt_secret
+JWT_REFRESH_SECRET=your_refresh_secret
+GOOGLE_GENAI_API_KEY=your_gemini_api_key
+EMAIL_USER=your_email
+EMAIL_APP_PASSWORD=your_email_app_password
 FRONTEND_URL=http://localhost:5173
 ```
+
+Start the backend:
 
 ```bash
 npm run dev
 ```
 
-Then the frontend:
+---
+
+### 3. Frontend Setup
 
 ```bash
 cd Frontend
@@ -51,18 +124,47 @@ npm install
 npm run dev
 ```
 
-App runs at `localhost:5173`, talking to the API at `localhost:3000`.
+The frontend will run at:
 
-## A few things I'd add next
+```
+http://localhost:5173
+```
 
-- A voice-based mock interview mode using the browser's speech APIs
-- Letting the AI factor in the specific company, not just the job description
-- Checklist-style progress tracking on the prep roadmap
+Backend API:
 
-## License
+```
+http://localhost:3000
+```
 
-MIT
+---
 
-## Author
+## 📌 Future Enhancements
 
-[mridul2172](https://github.com/mridul2172)
+* 🎙️ AI-powered voice mock interviews
+* 🏢 Company-specific interview preparation
+* 📅 Progress tracking dashboard
+* 📧 Email interview reminders
+* 📚 AI-generated learning resources
+* 🌍 Multi-language interview support
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 👨‍💻 Author
+
+**Mridul Tiwari**
+
+GitHub: https://github.com/mridul2172
+
+---
+
+## ⭐ Support
+
+If you found this project useful, please consider giving it a **⭐ Star** on GitHub.
+
+Your support helps improve the project and motivates future development.
