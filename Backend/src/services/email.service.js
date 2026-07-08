@@ -1,21 +1,48 @@
-const nodemailer = require("nodemailer")
+const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
+
+// From address must match the sender you verified in Brevo's dashboard
+// (Settings > Senders, Domains & IPs > Senders)
+const FROM_EMAIL = process.env.EMAIL_USER
+const FROM_NAME = "InterviewAI"
 
 /**
- * Gmail SMTP transporter, forced to use IPv4 explicitly.
- * Render's free tier doesn't support outbound IPv6, and Nodemailer's default
- * DNS resolution sometimes picks IPv6 first even with dns.setDefaultResultOrder,
- * so `family: 4` on the transport itself is the reliable fix here.
+ * Sends a transactional email via Brevo's HTTPS API. Using the API instead
+ * of SMTP sidesteps Render's unreliable outbound SMTP/IPv6 connectivity —
+ * this is a plain HTTPS POST request, same as any other API call.
+ *
+ * @param {Object} params
+ * @param {string} params.to - Recipient email address
+ * @param {string} params.subject - Email subject line
+ * @param {string} params.html - HTML body content
+ * @param {string} [params.replyTo] - Optional reply-to address
+ * @returns {Promise<void>}
+ * @throws Will throw if the Brevo API returns a non-2xx response
  */
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    family: 4,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_APP_PASSWORD
+async function sendEmail({ to, subject, html, replyTo }) {
+    const response = await fetch(BREVO_API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "api-key": process.env.BREVO_API_KEY
+        },
+        body: JSON.stringify({
+            sender: { name: FROM_NAME, email: FROM_EMAIL },
+            to: [ { email: to } ],
+            ...(replyTo ? { replyTo: { email: replyTo } } : {}),
+            subject,
+            htmlContent: html
+        })
+    })
+
+    if (!response.ok) {
+        const errorBody = await response.text()
+        throw new Error(`Brevo API error (${response.status}): ${errorBody}`)
     }
-})
+
+    const data = await response.json()
+    console.log("Email sent:", data.messageId)
+}
 
 
 /**
@@ -32,13 +59,11 @@ async function sendVerificationEmail(to, token) {
     const link = `${process.env.FRONTEND_URL}/verify-email?token=${token}`
 
     try {
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        await sendEmail({
             to,
             subject: "Verify your email",
             html: `<p>Click <a href="${link}">here</a> to verify your email. This link expires in 1 hour.</p>`
         })
-        console.log("Email sent:", info.messageId, info.accepted, info.rejected)
     } catch (err) {
         console.error("Email sending failed:", err.message)
         throw err
@@ -58,13 +83,11 @@ async function sendResetPasswordEmail(to, token) {
     const link = `${process.env.FRONTEND_URL}/reset-password?token=${token}`
 
     try {
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        await sendEmail({
             to,
             subject: "Reset your password",
             html: `<p>Click <a href="${link}">here</a> to reset your password. This link expires in 1 hour.</p>`
         })
-        console.log("Email sent:", info.messageId, info.accepted, info.rejected)
     } catch (err) {
         console.error("Email sending failed:", err.message)
         throw err
@@ -83,15 +106,13 @@ async function sendResetPasswordEmail(to, token) {
  */
 async function sendOtpEmail(to, otp) {
     try {
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        await sendEmail({
             to,
             subject: "Your verification code",
             html: `<p>Your verification code is:</p>
                    <h2 style="letter-spacing: 4px;">${otp}</h2>
                    <p>This code expires in 10 minutes. If you didn't request this, ignore this email.</p>`
         })
-        console.log("OTP email sent:", info.messageId, info.accepted, info.rejected)
     } catch (err) {
         console.error("OTP email sending failed:", err.message)
         throw err
@@ -112,8 +133,7 @@ async function sendOtpEmail(to, otp) {
  */
 async function sendContactEmail({ name, email, message }) {
     try {
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        await sendEmail({
             to: process.env.EMAIL_USER,
             replyTo: email,
             subject: `New contact form message from ${name}`,
@@ -122,7 +142,6 @@ async function sendContactEmail({ name, email, message }) {
                    <p><strong>Message:</strong></p>
                    <p>${message}</p>`
         })
-        console.log("Contact email sent:", info.messageId, info.accepted, info.rejected)
     } catch (err) {
         console.error("Contact email sending failed:", err.message)
         throw err
