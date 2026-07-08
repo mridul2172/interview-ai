@@ -3,7 +3,7 @@ import axios from "axios"
 
 // withCredentials so the auth cookie (session/JWT) is sent with every request
 const api = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: import.meta.env.VITE_API_BASE_URL,
     withCredentials: true
 })
 
