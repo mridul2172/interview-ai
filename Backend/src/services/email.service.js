@@ -1,10 +1,13 @@
 const nodemailer = require("nodemailer")
 
-// family: 4 forces IPv4 for the SMTP connection — Render's free tier has
-// unreliable outbound IPv6 routing, which was causing ENETUNREACH errors
-// when nodemailer tried to reach Gmail's SMTP server over IPv6
+// Explicit host + port 587 (STARTTLS) instead of the "gmail" service shorthand —
+// Render's free tier frequently times out on port 465, which nodemailer defaults
+// to when using service: "gmail". family: 4 forces IPv4 since Render's outbound
+// IPv6 routing is also unreliable and was causing ENETUNREACH errors.
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_APP_PASSWORD
