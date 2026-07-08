@@ -1,37 +1,11 @@
-const nodemailer = require("nodemailer")
-const dns = require("dns")
-const { promisify } = require("util")
+const { Resend } = require("resend")
 
-const resolve4 = promisify(dns.resolve4)
+const resend = new Resend(process.env.RESEND_API_KEY)
 
-// nodemailer's `family: 4` option isn't reliably forcing IPv4 lookups on Render,
-// so instead we resolve Gmail's SMTP hostname to a literal IPv4 address ourselves
-// and connect directly to that IP. `tls.servername` is required here because
-// once we connect via IP instead of hostname, TLS needs to know which hostname
-// to validate the certificate against.
-let transporterPromise = null
-
-async function getTransporter() {
-    if (!transporterPromise) {
-        transporterPromise = (async () => {
-            const addresses = await resolve4("smtp.gmail.com")
-
-            return nodemailer.createTransport({
-                host: addresses[ 0 ],
-                port: 587,
-                secure: false,
-                tls: {
-                    servername: "smtp.gmail.com"
-                },
-                auth: {
-                    user: process.env.EMAIL_USER,
-                    pass: process.env.EMAIL_APP_PASSWORD
-                }
-            })
-        })()
-    }
-    return transporterPromise
-}
+// Resend requires the "from" address to be on a domain you've verified in
+// their dashboard. Until a custom domain is verified there, their sandbox
+// address "onboarding@resend.dev" works for testing.
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev"
 
 
 /**
@@ -42,21 +16,22 @@ async function getTransporter() {
  * @param {string} to - Recipient email address
  * @param {string} token - Email verification token to embed in the link
  * @returns {Promise<void>}
- * @throws Will re-throw if nodemailer fails to send the email
+ * @throws Will re-throw if Resend fails to send the email
  */
 async function sendVerificationEmail(to, token) {
     const link = `${process.env.FRONTEND_URL}/verify-email?token=${token}`
 
     try {
-        const transporter = await getTransporter()
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        const { data, error } = await resend.emails.send({
+            from: FROM_EMAIL,
             to,
             subject: "Verify your email",
             html: `<p>Click <a href="${link}">here</a> to verify your email. This link expires in 1 hour.</p>`
         })
-        // Log delivery status so email issues show up in server logs, not just silent failures
-        console.log("Email sent:", info.messageId, info.accepted, info.rejected)
+
+        if (error) throw error
+
+        console.log("Email sent:", data.id)
     } catch (err) {
         console.error("Email sending failed:", err.message)
         throw err
@@ -70,20 +45,22 @@ async function sendVerificationEmail(to, token) {
  * @param {string} to - Recipient email address
  * @param {string} token - Password reset token to embed in the link
  * @returns {Promise<void>}
- * @throws Will re-throw if nodemailer fails to send the email
+ * @throws Will re-throw if Resend fails to send the email
  */
 async function sendResetPasswordEmail(to, token) {
     const link = `${process.env.FRONTEND_URL}/reset-password?token=${token}`
 
     try {
-        const transporter = await getTransporter()
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        const { data, error } = await resend.emails.send({
+            from: FROM_EMAIL,
             to,
             subject: "Reset your password",
             html: `<p>Click <a href="${link}">here</a> to reset your password. This link expires in 1 hour.</p>`
         })
-        console.log("Email sent:", info.messageId, info.accepted, info.rejected)
+
+        if (error) throw error
+
+        console.log("Email sent:", data.id)
     } catch (err) {
         console.error("Email sending failed:", err.message)
         throw err
@@ -98,20 +75,22 @@ async function sendResetPasswordEmail(to, token) {
  * @param {string} to - Recipient email address
  * @param {string|number} otp - The OTP code to send
  * @returns {Promise<void>}
- * @throws Will re-throw if nodemailer fails to send the email
+ * @throws Will re-throw if Resend fails to send the email
  */
 async function sendOtpEmail(to, otp) {
     try {
-        const transporter = await getTransporter()
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        const { data, error } = await resend.emails.send({
+            from: FROM_EMAIL,
             to,
             subject: "Your verification code",
             html: `<p>Your verification code is:</p>
                    <h2 style="letter-spacing: 4px;">${otp}</h2>
                    <p>This code expires in 10 minutes. If you didn't request this, ignore this email.</p>`
         })
-        console.log("OTP email sent:", info.messageId, info.accepted, info.rejected)
+
+        if (error) throw error
+
+        console.log("OTP email sent:", data.id)
     } catch (err) {
         console.error("OTP email sending failed:", err.message)
         throw err
@@ -128,13 +107,12 @@ async function sendOtpEmail(to, otp) {
  * @param {string} params.email - Email of the person submitting the form
  * @param {string} params.message - Message content from the form
  * @returns {Promise<void>}
- * @throws Will re-throw if nodemailer fails to send the email
+ * @throws Will re-throw if Resend fails to send the email
  */
 async function sendContactEmail({ name, email, message }) {
     try {
-        const transporter = await getTransporter()
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        const { data, error } = await resend.emails.send({
+            from: FROM_EMAIL,
             to: process.env.EMAIL_USER,
             replyTo: email,
             subject: `New contact form message from ${name}`,
@@ -143,7 +121,10 @@ async function sendContactEmail({ name, email, message }) {
                    <p><strong>Message:</strong></p>
                    <p>${message}</p>`
         })
-        console.log("Contact email sent:", info.messageId, info.accepted, info.rejected)
+
+        if (error) throw error
+
+        console.log("Contact email sent:", data.id)
     } catch (err) {
         console.error("Contact email sending failed:", err.message)
         throw err
