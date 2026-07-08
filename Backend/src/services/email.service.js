@@ -1,19 +1,37 @@
 const nodemailer = require("nodemailer")
+const dns = require("dns")
+const { promisify } = require("util")
 
-// Explicit host + port 587 (STARTTLS) instead of the "gmail" service shorthand —
-// Render's free tier frequently times out on port 465, which nodemailer defaults
-// to when using service: "gmail". family: 4 forces IPv4 since Render's outbound
-// IPv6 routing is also unreliable and was causing ENETUNREACH errors.
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_APP_PASSWORD
-    },
-    family: 4
-})
+const resolve4 = promisify(dns.resolve4)
+
+// nodemailer's `family: 4` option isn't reliably forcing IPv4 lookups on Render,
+// so instead we resolve Gmail's SMTP hostname to a literal IPv4 address ourselves
+// and connect directly to that IP. `tls.servername` is required here because
+// once we connect via IP instead of hostname, TLS needs to know which hostname
+// to validate the certificate against.
+let transporterPromise = null
+
+async function getTransporter() {
+    if (!transporterPromise) {
+        transporterPromise = (async () => {
+            const addresses = await resolve4("smtp.gmail.com")
+
+            return nodemailer.createTransport({
+                host: addresses[ 0 ],
+                port: 587,
+                secure: false,
+                tls: {
+                    servername: "smtp.gmail.com"
+                },
+                auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_APP_PASSWORD
+                }
+            })
+        })()
+    }
+    return transporterPromise
+}
 
 
 /**
@@ -30,6 +48,7 @@ async function sendVerificationEmail(to, token) {
     const link = `${process.env.FRONTEND_URL}/verify-email?token=${token}`
 
     try {
+        const transporter = await getTransporter()
         const info = await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to,
@@ -57,6 +76,7 @@ async function sendResetPasswordEmail(to, token) {
     const link = `${process.env.FRONTEND_URL}/reset-password?token=${token}`
 
     try {
+        const transporter = await getTransporter()
         const info = await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to,
@@ -82,6 +102,7 @@ async function sendResetPasswordEmail(to, token) {
  */
 async function sendOtpEmail(to, otp) {
     try {
+        const transporter = await getTransporter()
         const info = await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to,
@@ -111,6 +132,7 @@ async function sendOtpEmail(to, otp) {
  */
 async function sendContactEmail({ name, email, message }) {
     try {
+        const transporter = await getTransporter()
         const info = await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: process.env.EMAIL_USER,
