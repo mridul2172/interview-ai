@@ -8,6 +8,14 @@ const verificationTokenModel = require("../models/verificationToken.model")
 const otpModel = require("../models/otp.model")
 const { sendVerificationEmail, sendResetPasswordEmail, sendOtpEmail } = require("../services/email.service")
 
+// Frontend and backend live on different domains in production (Vercel + Render),
+// so cookies must be marked secure + sameSite: "none" or the browser silently drops them
+const COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none"
+}
+
 
 /**
  * @name generateAccessToken
@@ -181,8 +189,8 @@ async function loginUserController(req, res) {
 
     await refreshTokenModel.create({ token: refreshToken, user: user._id })
 
-    res.cookie("token", accessToken)
-    res.cookie("refreshToken", refreshToken, { httpOnly: true })
+    res.cookie("token", accessToken, COOKIE_OPTIONS)
+    res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS)
 
     res.status(200).json({
         message: "User loggedIn successfully.",
@@ -212,8 +220,8 @@ async function logoutUserController(req, res) {
         await refreshTokenModel.deleteOne({ token: refreshToken })
     }
 
-    res.clearCookie("token")
-    res.clearCookie("refreshToken")
+    res.clearCookie("token", COOKIE_OPTIONS)
+    res.clearCookie("refreshToken", COOKIE_OPTIONS)
 
     res.status(200).json({
         message: "User logged out successfully"
@@ -273,7 +281,7 @@ async function refreshTokenController(req, res) {
             { expiresIn: "15m" }
         )
 
-        res.cookie("token", newAccessToken)
+        res.cookie("token", newAccessToken, COOKIE_OPTIONS)
 
         res.status(200).json({
             message: "Token refreshed successfully."
@@ -547,8 +555,8 @@ async function deleteAccountController(req, res) {
     await refreshTokenModel.deleteMany({ user: user._id })
     await userModel.findByIdAndDelete(user._id)
 
-    res.clearCookie("token")
-    res.clearCookie("refreshToken")
+    res.clearCookie("token", COOKIE_OPTIONS)
+    res.clearCookie("refreshToken", COOKIE_OPTIONS)
 
     res.status(200).json({
         message: "Account deleted successfully."
