@@ -12,11 +12,13 @@ import MyReports from "./features/interview/pages/MyReports";
 import ResetPassword from "./features/auth/pages/ResetPassword";
 import LandingPage from "./features/landing/pages/LandingPage";
 import PrivacyPolicy from "./features/landing/pages/PrivacyPolicy";
-import TermsOfService from "./features/landing/pages/TermsOfService";
+import CookiePolicy from "./features/landing/pages/CookiePolicy";
 import Contact from "./features/landing/pages/Contact";
 import NotFound from "./components/NotFound";
 import Analytics from "./features/interview/pages/Analytics";
-
+import FeaturesPage from "./features/landing/components/FeaturesPage";
+import HowItWorksPage from "./features/landing/components/HowItWorksPage";
+import PricingPage from "./features/landing/components/PricingPage";
 
 
 /**
@@ -46,8 +48,8 @@ export const router = createBrowserRouter([
         element: <PrivacyPolicy />
     },
     {
-        path: "/terms",
-        element: <TermsOfService />
+        path: "/cookies",
+        element: <CookiePolicy />
     },
     {
         path: "/contact",
@@ -88,5 +90,17 @@ export const router = createBrowserRouter([
     {
         path: "/analytics",
         element: <Protected><Analytics /></Protected>
-    }
+    },
+    {
+    path: "/features",
+    element: <FeaturesPage />
+},
+{
+    path: "/how-it-works",
+    element: <HowItWorksPage />
+},
+{
+    path: "/pricing",
+    element: <PricingPage />
+}
 ])

@@ -2,11 +2,39 @@
     display: flex;
     min-height: 100vh;
     background: #0d1117;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -120px;
+        right: -120px;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(225, 3, 77, 0.14) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: -120px;
+        left: -120px;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(93, 202, 165, 0.10) 0%, transparent 70%);
+        pointer-events: none;
+    }
 
     &__form-panel {
         flex: 1;
         display: flex;
         flex-direction: column;
+        position: relative;
+        z-index: 1;
     }
 
     &__top-link {
@@ -16,6 +44,7 @@
             color: #9199a8;
             font-size: 13px;
             text-decoration: none;
+            transition: color 0.15s ease;
 
             &:hover {
                 color: #e1034d;
@@ -47,17 +76,41 @@
     width: 100%;
     max-width: 380px;
 
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 15px;
+        color: #fff;
+        margin-bottom: 28px;
+    }
+
+    &__brand-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #e1034d, #ff2d78);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        box-shadow: 0 0 16px rgba(225, 3, 77, 0.4);
+        flex-shrink: 0;
+    }
+
     h2 {
         color: #fff;
-        font-size: 24px;
+        font-size: 25px;
         font-weight: 700;
-        margin: 0 0 6px;
+        margin: 0 0 8px;
     }
 
     &__subtitle {
         color: #9199a8;
         font-size: 14px;
-        margin: 0 0 28px;
+        margin: 0 0 26px;
+        line-height: 1.5;
     }
 
     label {
@@ -65,12 +118,14 @@
         color: #c5cad3;
         font-size: 13px;
         font-weight: 500;
-        margin-bottom: 6px;
+        margin-bottom: 7px;
     }
 
     &__input-wrap {
         margin-bottom: 16px;
         position: relative;
+        display: flex;
+        align-items: center;
 
         input {
             width: 100%;
@@ -78,52 +133,61 @@
             background: #171a21;
             border: 1px solid #262b35;
             color: #fff;
-            padding: 12px 14px;
+            padding: 12px 14px 12px 40px;
             border-radius: 10px;
             font-size: 14px;
             outline: none;
+            transition: border-color 0.15s ease;
+
+            &::placeholder {
+                color: #565d6b;
+            }
 
             &:focus {
                 border-color: #e1034d;
             }
         }
+
+        &--inline {
+            margin-bottom: 0;
+            flex: 1;
+        }
+    }
+
+    &__input-icon {
+        position: absolute;
+        left: 14px;
+        color: #565d6b;
+        pointer-events: none;
+        z-index: 1;
     }
 
     &__input-wrap--password input {
-        padding-right: 60px;
+        padding-right: 56px;
     }
 
     &__input-row {
         display: flex;
         gap: 8px;
         margin-bottom: 16px;
-
-        input {
-            flex: 1;
-            box-sizing: border-box;
-            background: #171a21;
-            border: 1px solid #262b35;
-            color: #fff;
-            padding: 12px 14px;
-            border-radius: 10px;
-            font-size: 14px;
-            outline: none;
-
-            &:focus {
-                border-color: #e1034d;
-            }
-        }
+        align-items: stretch;
     }
 
     &__send-code-btn {
         white-space: nowrap;
-        background: #262b35;
+        background: #171a21;
         color: #fff;
-        border: 1px solid #363c4a;
+        border: 1px solid #262b35;
         padding: 0 16px;
         border-radius: 10px;
         font-size: 13px;
+        font-weight: 500;
         cursor: pointer;
+        transition: border-color 0.15s ease, background 0.15s ease;
+
+        &:hover:not(:disabled) {
+            border-color: #e1034d;
+        }
 
         &:disabled {
             opacity: 0.6;
@@ -133,13 +197,12 @@
 
     &__eye-btn {
         position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
+        right: 14px;
         background: none;
         border: none;
-        color: #6b7280;
+        color: #9199a8;
         font-size: 12px;
+        font-weight: 500;
         cursor: pointer;
     }
 
@@ -157,18 +220,27 @@
 
     &__submit-btn {
         width: 100%;
-        background: linear-gradient(90deg, #e1034d, #ff2d78);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #e1034d, #ff2d78);
         color: #fff;
         border: none;
         padding: 13px;
         border-radius: 10px;
-        font-size: 14px;
+        font-size: 14.5px;
         font-weight: 600;
         cursor: pointer;
-        box-shadow: 0 8px 20px rgba(225, 3, 77, 0.3);
-        transition: transform 0.15s ease;
+        box-shadow: 0 10px 26px rgba(225, 3, 77, 0.35);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
 
-        &:active {
+        &:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 30px rgba(225, 3, 77, 0.42);
+        }
+
+        &:active:not(:disabled) {
             transform: scale(0.98);
         }
 
@@ -176,19 +248,24 @@
             opacity: 0.6;
             cursor: not-allowed;
             box-shadow: none;
+            transform: none;
         }
     }
 
     &__switch-text {
         text-align: center;
-        margin-top: 20px;
+        margin-top: 22px;
         color: #9199a8;
-        font-size: 13px;
+        font-size: 13.5px;
 
         a {
-            color: #e1034d;
+            color: #ff5f8f;
             font-weight: 500;
             text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

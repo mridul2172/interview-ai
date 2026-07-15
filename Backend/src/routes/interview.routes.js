@@ -3,7 +3,7 @@ const authMiddleware = require("../middlewares/auth.middleware")
 const interviewController = require("../controllers/interview.controller")
 const upload = require("../middlewares/file.middleware")
 const { aiLimiter } = require("../middlewares/rateLimit.middleware")
-
+const requirePro = require('../middlewares/requirePro.middleware')
 
 const interviewRouter = express.Router()
 
@@ -45,6 +45,7 @@ interviewRouter.post("/resume/pdf/:interviewReportId", authMiddleware.authUser, 
  * @access private
  */
 interviewRouter.patch("/report/:interviewId/regenerate", authMiddleware.authUser, aiLimiter, interviewController.regenerateSectionController)
+
 
 
 

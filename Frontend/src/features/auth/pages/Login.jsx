@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router'
+import { useNavigate, useLocation, Link } from 'react-router'
 import "./loginPage.scss"
 import { useAuth } from '../hooks/useAuth'
 import AuthSidePanel from '../../../components/AuthSidePanel'
@@ -8,21 +8,21 @@ const Login = () => {
 
     const { error, handleLogin } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
     const [ showPassword, setShowPassword ] = useState(false)
     const [ submitting, setSubmitting ] = useState(false)
 
-    // Redirect to dashboard only on success; on failure, `error` from
-    // useAuth is already set and rendered below.
     const handleSubmit = async (e) => {
         e.preventDefault()
         setSubmitting(true)
         const success = await handleLogin({ email, password })
         setSubmitting(false)
         if (success) {
-            navigate('/dashboard')
+            const redirectTo = location.state?.from || '/dashboard'
+            navigate(redirectTo)
         }
     }
 
@@ -39,13 +39,26 @@ const Login = () => {
 
                 <div className="split-auth-page__form-wrap">
                     <div className="split-form">
+                        <div className="split-form__brand">
+                            <span className="split-form__brand-mark">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M9 3a3 3 0 0 0-3 3v1a3 3 0 0 0-2 5 3 3 0 0 0 2 5v1a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z" />
+                                    <path d="M15 3a3 3 0 0 1 3 3v1a3 3 0 0 1 2 5 3 3 0 0 1-2 5v1a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z" />
+                                </svg>
+                            </span>
+                            InterviewAI
+                        </div>
+
                         <h2>Welcome back</h2>
-                        <p className="split-form__subtitle">Log in to continue your prep.</p>
+                        <p className="split-form__subtitle">Sign in to continue prepping for your next interview.</p>
 
                         <form onSubmit={handleSubmit}>
 
                             <label htmlFor="email">Email</label>
                             <div className="split-form__input-wrap">
+                                <svg className="split-form__input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" />
+                                </svg>
                                 <input
                                     value={email}
                                     onChange={(e) => { setEmail(e.target.value) }}
@@ -54,6 +67,9 @@ const Login = () => {
 
                             <label htmlFor="password">Password</label>
                             <div className="split-form__input-wrap split-form__input-wrap--password">
+                                <svg className="split-form__input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                                </svg>
                                 <input
                                     value={password}
                                     onChange={(e) => { setPassword(e.target.value) }}
@@ -71,7 +87,14 @@ const Login = () => {
                             {error && <p className="split-form__error">{error}</p>}
 
                             <button className="split-form__submit-btn" disabled={submitting}>
-                                {submitting ? "Logging in..." : "Log In"}
+                                {submitting ? "Logging in..." : (
+                                    <>
+                                        Log In
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <line x1="4" y1="12" x2="20" y2="12" /><polyline points="14 6 20 12 14 18" />
+                                        </svg>
+                                    </>
+                                )}
                             </button>
                         </form>
 

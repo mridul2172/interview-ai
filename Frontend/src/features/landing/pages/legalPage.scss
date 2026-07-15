@@ -4,6 +4,7 @@
     font-family: system-ui, -apple-system, sans-serif;
     min-height: 100vh;
 
+    // top nav with just the brand, kept minimal for legal pages
     .legal-navbar {
         display: flex;
         justify-content: space-between;
@@ -22,6 +23,7 @@
             text-decoration: none;
         }
 
+        // small accent dot next to the brand name
         &__dot {
             width: 8px;
             height: 8px;
@@ -30,6 +32,7 @@
         }
     }
 
+    // actual policy/terms text content
     .legal-content {
         max-width: 700px;
         margin: 0 auto;
@@ -42,6 +45,7 @@
             margin: 0 0 8px;
         }
 
+        // "last updated" line under the title
         .legal-updated {
             color: #6b7280;
             font-size: 13px;
@@ -75,6 +79,7 @@
         }
     }
 
+    // "go back" link at the bottom of the page
     .legal-back-link {
         display: inline-block;
         margin-top: 24px;
@@ -86,4 +91,57 @@
             text-decoration: underline;
         }
     }
+}
+
+// NOTE: second .legal-page block below, using BEM-style modifiers instead of
+// the nested classes above (legal-navbar/legal-content/legal-back-link).
+// Looks like an older/alt version of the same page — leaving as is since
+// I'm not supposed to touch logic, but worth checking if this is still in use
+// or can be removed later.
+.legal-page {
+  background: #0d1117;
+  color: #e6edf3;
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+
+  &__container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  &__back {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: #e1034d;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__updated {
+    color: #6b7280;
+    margin-bottom: 32px;
+  }
+
+  h1 {
+    color: white;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    color: white;
+    margin-top: 28px;
+  }
+
+  p {
+    color: #9199a8;
+    line-height: 1.7;
+  }
+
+  a {
+    color: #e1034d;
+  }
 }
