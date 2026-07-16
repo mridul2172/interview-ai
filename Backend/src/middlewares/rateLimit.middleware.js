@@ -6,7 +6,7 @@ const { ipKeyGenerator } = require("express-rate-limit")
 const aiLimiter = rateLimit({
     windowMs: 24 * 60 * 60 * 1000, // reset window: 24 hours
 
-    max: 2, // free tier gets 2 reports/day — keep in sync with pricing page if this ever changes
+    max: 4, // free tier gets 4 reports/day — keep in sync with pricing page if this ever changes
 
     // Prefer logged-in user id as the key so limits follow the account,
     // not the device/network. Fall back to IP for unauthenticated requests
@@ -19,7 +19,7 @@ const aiLimiter = rateLimit({
 
     // Returned when a free user hits the cap — nudge towards upgrade instead of a generic 429
     message: {
-        message: "You've used your 2 free reports for today. Upgrade to Pro for unlimited reports."
+        message: "You've used your 4 free reports for today. Upgrade to Pro for unlimited reports."
     }
 })
 

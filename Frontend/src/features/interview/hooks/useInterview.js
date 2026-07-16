@@ -36,7 +36,7 @@ export const useInterview = () => {
             // 429 means the AI generation rate limit was hit — show a clearer
             // message than the generic fallback so users know it's not a bug
             if (err.response?.status === 429) {
-                setError("Daily limit reached for AI report generation. Please try again tomorrow.")
+                setError("Daily limit reached for AI report generation. Upgrade to Pro for unlimited reports.")
             } else {
                 setError(err.response?.data?.message || "Something went wrong. Please try again.")
             }
@@ -96,7 +96,7 @@ export const useInterview = () => {
         }
         catch (err) {
             if (err.response?.status === 429) {
-                setError("Daily limit reached for resume generation. Please try again tomorrow.")
+                setError("Daily limit reached for resume generation. Upgrade to Pro for unlimited access.")
             } else {
                 setError(err.response?.data?.message || "Something went wrong.")
             }
@@ -116,7 +116,7 @@ export const useInterview = () => {
             return true
         } catch (err) {
             if (err.response?.status === 429) {
-                setError("Daily limit reached for AI regeneration. Please try again tomorrow.")
+                setError("Daily limit reached for AI regeneration. Upgrade to Pro for unlimited access.")
             } else {
                 setError(err.response?.data?.message || "Failed to regenerate. Try again.")
             }
