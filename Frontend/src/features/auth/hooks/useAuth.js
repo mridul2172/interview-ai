@@ -161,25 +161,6 @@ export const useAuth = () => {
         }
     }
 
-    // On mount, check if a valid session/cookie already exists and restore
-    // the user without requiring them to log in again. Errors are ignored
-    // here since "not logged in" is a valid, expected outcome, not a real failure.
-    useEffect(() => {
-
-        const getAndSetUser = async () => {
-            try {
-
-                const data = await getMe()
-                setUser(data.user)
-            } catch (err) { } finally {
-                setLoading(false)
-            }
-        }
-
-        getAndSetUser()
-
-    }, [])
-
   return {
         user, loading, error, otpSent, message, otpLoading,
         handleRegister, handleLogin, handleLogout,
